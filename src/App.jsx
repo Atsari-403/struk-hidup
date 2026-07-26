@@ -406,8 +406,7 @@ export default function StrukUmurHidup() {
               Struk Umur Hidup
             </h1>
             <p className="text-sm text-[#F5F2F2]/60 mt-2">
-              Masukin tanggal lahir, dapetin struk fakta-fakta receh soal
-              hidupmu. Unduh atau screenshot, kirim ke WhatsApp.
+              Masukin tanggal lahir dan nama kamu.
             </p>
           </div>
         )}
@@ -577,32 +576,33 @@ export default function StrukUmurHidup() {
                 ) : (
                   <Volume2 className="w-3.5 h-3.5" />
                 )}
-                {muted ? "Musik dimatikan" : "Musik menyala"}
+                {muted ? "Unmute" : "Mute"}
               </button>
             </div>
-
-            {/* Ganti SONG_URL di atas dengan file lagu kamu. loop biar
-                nyambung terus selama struk tampil, muted state dikontrol
-                lewat tombol di atas. */}
-            <audio
-              ref={audioRef}
-              src={SONG_URL}
-              loop
-              preload="auto"
-              onError={(e) => {
-                console.error(
-                  "Audio gagal dimuat, cek file di:",
-                  SONG_URL,
-                  e.target.error,
-                );
-              }}
-            />
           </div>
         )}
 
         <p className="text-center text-[10px] text-[#F5F2F2]/50 mt-6 tracking-wide">
           semua angka estimasi kasar ya
         </p>
+
+        {/* Selalu ter-mount (tidak ikut kondisi `result`) supaya audioRef
+            sudah pasti terisi begitu tombol "Cetak struk" diklik - kalau
+            elemen ini ikut kondisi result, play() akan dipanggil sebelum
+            elemen-nya sempat ada di DOM dan gagal diam-diam. */}
+        <audio
+          ref={audioRef}
+          src={SONG_URL}
+          loop
+          preload="auto"
+          onError={(e) => {
+            console.error(
+              "Audio gagal dimuat, cek file di:",
+              SONG_URL,
+              e.target.error,
+            );
+          }}
+        />
       </div>
     </div>
   );
