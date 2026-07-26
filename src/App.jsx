@@ -280,8 +280,8 @@ export default function StrukUmurHidup() {
     // browser tidak memblokir autoplay-nya - trigger dari klik user itu sah.
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(() => {
-        /* browser tetap bisa menolak; user bisa tekan tombol volume manual */
+      audioRef.current.play().catch((err) => {
+        console.error("Audio play() gagal:", err.name, err.message);
       });
     }
   }
@@ -584,7 +584,19 @@ export default function StrukUmurHidup() {
             {/* Ganti SONG_URL di atas dengan file lagu kamu. loop biar
                 nyambung terus selama struk tampil, muted state dikontrol
                 lewat tombol di atas. */}
-            <audio ref={audioRef} src={SONG_URL} loop preload="auto" />
+            <audio
+              ref={audioRef}
+              src={SONG_URL}
+              loop
+              preload="auto"
+              onError={(e) => {
+                console.error(
+                  "Audio gagal dimuat, cek file di:",
+                  SONG_URL,
+                  e.target.error,
+                );
+              }}
+            />
           </div>
         )}
 
