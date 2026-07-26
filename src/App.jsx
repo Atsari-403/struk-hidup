@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { toPng, toBlob } from "html-to-image";
-import fixYouSong from "@/assets/audio/fixyou.mp3";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,9 +21,10 @@ import {
   VolumeX,
 } from "lucide-react";
 
-// File lagu diimpor langsung dari src/assets/audio - bundler (Vite/webpack)
-// akan mengubahnya jadi URL yang valid saat build.
-const SONG_URL = fixYouSong;
+// File lagu diambil dari folder public, bukan di-import lewat bundler -
+// ini paling aman & konsisten antara dev dan build production (Vercel).
+// Pindahkan file kamu ke: public/audio/fixyou.mp3
+const SONG_URL = "/audio/fixyou.mp3";
 
 const BULAN = [
   "Januari",
@@ -265,7 +265,7 @@ export default function StrukUmurHidup() {
     }
     const iso = tglDigitsToIso(tglDigits);
     if (!iso) {
-      setError("Yang bener dong, tanggal lahirnya nggak valid.");
+      setError("Tanggal lahirnya nggak valid, coba cek lagi ya.");
       return;
     }
     const birth = new Date(iso + "T00:00:00");
@@ -406,7 +406,8 @@ export default function StrukUmurHidup() {
               Struk Umur Hidup
             </h1>
             <p className="text-sm text-[#F5F2F2]/60 mt-2">
-              Masukin tanggal lahir dan nama kamu.
+              Masukin tanggal lahir, dapetin struk fakta-fakta receh soal
+              hidupmu. Unduh atau screenshot, kirim ke WhatsApp.
             </p>
           </div>
         )}
@@ -576,7 +577,7 @@ export default function StrukUmurHidup() {
                 ) : (
                   <Volume2 className="w-3.5 h-3.5" />
                 )}
-                {muted ? "Unmute" : "Mute"}
+                {muted ? "Musik dimatikan" : "Musik menyala"}
               </button>
             </div>
 
